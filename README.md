@@ -182,13 +182,18 @@ RSC(React-Serve-Component)の世界では、従来はすべてのコンポーネ
 まず、**SC と SSR って一緒なのか？** という疑問に対しては、React 公式が回答しており、併用できる概念であると説明しています。
 あくまで、SSR は HTML をサーバーサイドで事前に生成(レンダリング)する従来通りの用語であるため、SC や CC がサーバーサイドでレンダーされること自体を SSR としていません。
 
-しかし、例えば SC は hydration が原理的に行われない(※)ため、SC のみで構成したページは SSR と言えるのか、画面回遊時に RSC 以前とは違いサーバーサイドで SC がレンダーされるようになったが、従来通り SSR/CSR などという言葉が適切なのか など新しいパターンが出現したために疑問を抱く人もいます。
-また本記事では詳しく触れることができませんでしたが NextJs の v14 以降では PPR(Partial-Pre-Rendering)という新たなレンダリングモデルが登場しました。
+https://github.com/reactjs/rfcs/blob/main/text/0188-server-components.md#does-this-replace-ssr
+
+> Does this replace SSR?
+> No, they’re complementary. SSR is primarily a technique to quickly display a non-interactive version of client components. You still need to pay the cost of downloading, parsing, and executing those Client Components after the initial HTML is loaded.
+> You can combine Server Components and SSR, where Server Components render first, with Client Components rendering into HTML for fast non-interactive display while they are hydrated. When combined in this way you still get fast startup, but you also dramatically reduce the amount of JS that needs to be downloaded on the client.
+
+しかし、RSC という新たな概念により、従来にはなかったレンダリングのパターンが出現し、従来の定義と比べて新たな疑問を抱く人も現れています。
+例えば SC は 非インタラクティブであり、hydration が原理的に行われないため、SC のみで構成したページは SSR と言えるのでしょうか、画面回遊時に RSC 以前とは違いサーバーサイドで SC がレンダーされるようになったが、従来通り SSR/CSR などという言葉が適切なのでしょうか。
+本記事では詳しく触れることができませんでしたが、実際に Next.js の v14 以降では PPR(Partial-Pre-Rendering)という新たなレンダリングモデルが登場しました。
 https://zenn.dev/akfm/articles/nextjs-partial-pre-rendering
 
-昨今までも SSR という言葉の意味が、用語が使われる文脈が変わり変化してきたように、これからも、今の意味から変わっていく可能性もありそうです。
-
-(※)非インタラクティブなコンポーネントであるため
+昨今までも SSR という言葉の意味が、用語が使われる文脈が変わり変化してきたように、これからも、今の意味から変わっていく可能性がありそうです。
 
 ## まとめ
 
