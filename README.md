@@ -251,16 +251,14 @@ RSC の SC は、RSC 以前のコンポーネント(つまり CC)と異なり、
 
 ## SPA(Single-page application)
 
-CSR、SSR という用語と関連する言葉として、SPA という言葉がありますが、筆者の観測する限り、この用語の使われ方は大きく分けて二つの意味に分かれているように見えます。
+CSR、SSR と関連して、場面や話者によって意味合いが大きく変わる用語にSPA(Single-page application) があります。筆者の観測では、この用語は大きく分けて二つの意味で使用されているように見受けられます。
 
 1. ソフトナビゲーションで画面回遊するアプリケーション全般(SSR/SSG と共存する概念)
 2. サーバーサイドでレンダリングをしない CSR のみのアプリケーション(SSR/SSG と排他的関係の概念)
 
-1 については、HTML ファイルがサイト訪問時の一回を除いては２度と送られてこないアプリケーションということになり、ナビゲーション時にも HTML ファイルを都度配信する MPA(Multi-page application)との対比として捉えることができます。
+1の意味でのSPAは、初回アクセス時を除き、HTMLファイルをサーバーから送信しないアプリケーションを指します。ページ遷移はCSR、つまりJavaScriptによって動的に行われ、あたかも単一のページ内で動作しているかのように見えます。これは、ページ遷移ごとにHTMLファイルをサーバーから取得するMPA（Multi-Page Application）との対比として理解できます。また、サーバーサイドランタイムの有無について定義されておらず、SSR（Server-Side Rendering）やSSG（Static Site Generation）と組み合わせても成り立つ概念になっています。
 
-2 については、事前にレンダリングをしない、Node.js サーバーを持たない 完全にブラウザ上でのみ動作する CSR のみのアプリケーションということになります。
-
-2 の用例は海外で特に見られる傾向にあり、例えば State of JavaScript の 2022 年から今年度に至るまでのアンケートでの SPA の定義や Remix の SPA モードの意味では、 SSR/SSG と横並びになるようなものとなっています。
+2の意味でのSPAは、事前にレンダリングをしない、つまりサーバーサイドランタイムをもたない 完全にブラウザ上でのみ動作する CSR のみのアプリケーションということになります。この用例は海外で特に見られる傾向にあり、例えば State of JavaScript の 2022 年から今年度に至るまでのアンケートでの SPA の定義や Remix の SPA モードという名前の機能の意味では、 SSR/SSG と横並びになるようなものとなっています。
 
 > SPA: Apps that run entirely in the browser
 > MPA: Apps that run entirely in the server, with minimal client-side dynamic behavior
