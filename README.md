@@ -269,17 +269,27 @@ https://survey.devographics.com/en-US/survey/state-of-js/2024/outline/9
 
 ## PPR(Partial Prerendering)
 
+:::message　alert
+Partial Prerendering はNext.js v15.1.2時点で実験的な機能で、canary でのみ利用可能であり、PPRがstableな機能として提供される際には機能の一部が変更されている可能性がありますので、ご注意下さい
+:::
+
 **用語の意味. 同一のルート(ページ)内でビルド時/毎リクエスト時 にサーバーサイドでレンダーされるコンポーネントを組み合わせるレンダリングモデル**
 
-今までの用語と意味の粒度が変わってきている理由としては、PPRのようなレンダリングモデルでは、従来の用語の定義のようにざっくりとページ全体がどのようにレンダリングされているのかという定義の当てはめ方ができなくなってきたためです。
+:::message
+従来の用語と意味の粒度が揃っていない理由は、PPR のようなレンダリングモデルでは、従来の用語の定義のようにページ全体がどのようにレンダリングされているのかという大まかな分類では捉えきれなくなってきたためです。
+:::
 
-PPRはNext.jsの提供するexperimentalな機能であり、新たなレンダリングモデルです。そしてレンダリングの焦点はサーバーサイド(ビルド時も含む)になります。
+PPRはNext.jsの提供する実験的な機能であり、新たなレンダリングモデルです。そしてレンダリングの焦点はサーバーサイド(ビルド時も含む)にあります。
 
-PPRを文字通り直訳すると部分的(Partial)に事前レンダリング(Prerendering ≒ SSG)をする機能になりますが、公式のドキュメントでは、staticなコンポーネントとdynamicなコンポーネントを、同一ルート(ページ)内に共存させることを実現する機能だと説明されています。
+PPRを文字通り直訳すると部分的(Partial)な事前レンダリング(Prerendering ≒ SSG)となりますが、公式のドキュメントでは、staticなコンポーネントとdynamicなコンポーネントを、同一ルート(ページ)内に共存させることを実現する機能だと説明されています。
 
-なお、staticはビルド時にレンダーするSSG相当の意味で、dynamicは毎リクエスト毎に(サーバーランタイムで)レンダーされるSSR相当の意味です。
+ここで、重要なのは「static」「dynamic」の意味です。
 
-従来のアプリケーションでは、アプリケーション全体あるいはページごとに、static/dynamicなレンダリングをすることを選択する必要がありましたが、PPRにより、ページ内でもより細かくコンポーネントのレンダーの仕方を設定できるようになりました。
+- static: ビルド時にレンダリングされるコンポーネントを指し、従来の SSG (Static Site Generation) に相当する。
+- dynamic: リクエストごとに（サーバーランタイムで）レンダリングされるコンポーネントを指し、従来の SSR (Server-Side Rendering) に相当する。
+
+従来のアプリケーションでは、アプリケーション全体あるいはページごとに、static/dynamicなレンダリングをすることを選択する必要がありました。つまり、ページ全体を SSG で生成するか、SSR で生成するかを選択していました。
+
 > For most web apps built today, you either choose between static and dynamic rendering for your entire application, or for a specific route.
 
 > (DeepL 翻訳)
@@ -287,12 +297,14 @@ PPRを文字通り直訳すると部分的(Partial)に事前レンダリング(P
 
 https://nextjs.org/learn/dashboard-app/partial-prerendering#static-vs-dynamic-routes
 
+しかし、PPRにより、ページ内でもより細かくコンポーネントのレンダーの仕方を設定できるようになりました。これにより、ページの一部はビルド時に生成し、残りの部分はリクエストごとに生成するという柔軟な構成が可能になります。 より詳しい解説が気になる方は以下の記事などを参考にしてください。
+
+https://zenn.dev/akfm/articles/nextjs-partial-pre-rendering
+
 
 :::message
-ページ内でレンダリング方法を細かく設定できるのだからアイランドアーキテクチャも似たような概念なのではないかという疑問に対して、筆者はどちらかというとアイランドアーキテクチャはRSCのほうが近い概念だと認識しています。アイランドアーキテクチャとPPRの関係について気になる方は以下の記事を参考にしてください。
+ページ内でレンダリング方法を細かく設定できる点で、アイランドアーキテクチャも似たような概念なのではないかと疑問に思う方がいらっしゃるかもしれませんが、筆者はどちらかというとアイランドアーキテクチャはRSCのほうが近い概念だと認識しています。アイランドアーキテクチャとPPRの関係について気になる方はakfm_sato 氏の[『PPRはアイランドアーキテクチャなのか』](https://zenn.dev/morinokami/articles/astro-server-islands-vs-nextjs-ppr)の記事を参考にしてください。また、PPRと似た概念との比較記事としては、Shinya Fujino氏の [『Next.js PPR と比較して理解する Astro Server Islands』](https://zenn.dev/morinokami/articles/astro-server-islands-vs-nextjs-ppr)でAstro v5の Server Islandsと比較されており参考になると思います。
 :::
-
-https://zenn.dev/akfm/articles/ppr-vs-islands-architecture
 
 
 ## まとめ
