@@ -27,7 +27,7 @@ FE(フロントエンド) においてレンダー、レンダリングという
   - クライアントサイドで DOM を更新すること
 - **SSR(Server-Side Rendering)において**
   - HTML ファイルを生成すること
-- **Pre-rendering(SSG(Static Site Generators))において**
+- **SSG(Static Site Generation)(Pre-rendering)において**
   - HTML ファイルを生成すること
 
 ### レンダリングモデルに関連する用語の意味
@@ -36,7 +36,7 @@ FE(フロントエンド) においてレンダー、レンダリングという
   - クライアントサイドで DOM を更新すること
 - **SSR(Server-Side Rendering)**
   - サーバーサイドで、毎ページリクエスト時に HTML ファイル(およびそのコンテンツ)を生成すること、あるいはそのレンダリングパターン
-- **Pre-rendering(SSG(Static Site Generators))**
+- **SSG(Static Site Generation)(Pre-rendering)**
   - build時に HTML ファイル(およびそのコンテンツ)を生成すること、あるいはそのレンダリングパターン
 - **SPA(Single-page application)**
   - ソフトナビゲーションで画面回遊するアプリケーション全般
@@ -53,7 +53,7 @@ Web フロントエンド以外でも、3DCG、動画、音声(作曲)のよう�
 - 音声（作曲）: 複数の MIDI データやデジタルオーディオ信号を音声ファイルデータ(mp3 など)として出力すること。
 
 これらの文脈では共通して、**データを計算して変換すること**という意味合いを持ち合わせています。
-しかし悪戯に変換しているのではなく、コンピュータ目線では次の段階の処理で解釈可能な形へ、また人間目線では理解や利用が可能な形式へと変換します。。
+しかし悪戯に変換しているのではなく、コンピュータ目線では次の段階の処理で解釈可能な形へ、また人間目線では理解や利用が可能な形式へと変換します。
 
 楽曲ファイルの場合は、最終的に人間が楽曲ファイルを再生することができる状態にすることがゴールとなり、そのための音声ファイルデータへの書き出し作業がレンダリングになります。
 
@@ -213,7 +213,7 @@ https://www.slideshare.net/slideshow/introducing-rendr-run-your-backbonejs-apps-
 
 :::message
 Astro と SSR
-MPA のフレームワークである Astro でも SSR は On-demand Rendering という概念として存在しており、ページリクエストに応じてサーバーサイドで HTML を生成することを意味します。 
+MPA のフレームワークである Astro でも SSR は [On-demand Rendering](https://docs.astro.build/en/guides/on-demand-rendering/) という概念として存在しており、ページリクエストに応じてサーバーサイドで HTML を生成することを意味します。 
 Astro は当初、Static Site Generation (SSG) に特化したフレームワークとして登場し、SPA に対抗し、従来の MPA のようにページ遷移を行いながらも、JavaScript 以外の言語との二重開発が不要であることを利点としています。
 SSG の静的ページのみであれば、ビルド時に生成した静的 HTML を配信し、外部 API はブラウザで処理できるため、Node.js 等のランタイムは不要ですが、On-demand Rendering が追加され、本来持たなかったサーバーサイドランタイムを持つという手段をとることで、これまでクライアントサイドで行っていた動的なコンテンツ生成 (CSR) をサーバーサイドで行い、コンテンツを含む HTML ファイルを配信できるようになりました。
 よって Astro の On-demand Rendering が解決した問題も Next.Js などの SSR with Hydration が解決したかった課題と全く違った方向を向いているわけではないと筆者は考えています。　
@@ -222,7 +222,7 @@ SSG の静的ページのみであれば、ビルド時に生成した静的 HTM
 
 ### RSC の ServerComponents は SSR なのか？
 
-RSC(React Server Components)の登場前までは、すべてのコンポーネントが一律に基本的にはクライアントサイドで、SSR/SSG の時は、サーバーサイド/ビルド時のランタイムでも実行されていました。しかし、RSC の世界では、従来通りのコンポーネントである Client Components(CC)と、完全にサーバーサイドでしか実行されない Server Components(SC)に別れました。
+RSC(React Server Components)の登場前までは、すべてのコンポーネントが一律に基本的にはクライアントサイドで、SSR/SSG の時は、サーバーサイド/ビルド時のランタイムでも実行されていました。しかし、RSC の世界では、従来通りのコンポーネントである **Client Components(CC)**と、完全にサーバーサイドでしか実行されない **Server Components(SC)**に別れました。
 
 では、**SC は SSR と同一の概念なのか？** という疑問に対しては、React 公式に回答があり、併用できる概念であると説明されています。
 あくまで、SSR は HTML をサーバーサイドで事前に生成(レンダリング)する従来通りの意味であるため、SC がレンダーされること自体を SSR としていません。
@@ -241,9 +241,9 @@ https://github.com/reactjs/rfcs/blob/main/text/0188-server-components.md#does-th
 :::message
 RSC の SC は、RSC 以前のコンポーネント(つまり CC)と異なり、SSR 時にもハイドレーションされず、ソフトナビゲーション時もサーバーサイドでしか実行されません。
 
-第一の理由として、SCはHooksやイベントハンドラなどのインタラクティブな要素を持たないため、クライアントサイドでの状態管理や更新が不要となります。これにより、サーバーサイドでレンダリングを完結させることができ、その結果はクライアントサイドの仮想DOM（React Tree）にそのまま適用されます。
+第一の理由として、SCはHooksやイベントハンドラなどの**インタラクティブ**な要素を持たないため、クライアントサイドでの状態管理や更新が不要となります。これにより、サーバーサイドでレンダリングを完結させることができ、その結果はクライアントサイドの仮想DOM（React Tree）にそのまま適用されます。
 
-第二の理由として、データ取得方法の変化が挙げられます。従来のSSRでは、初期表示に必要なデータはフレームワークが提供するデータ取得関数（Next.jsのgetServerSidePropsやRemixのloader関数など）を用いて、コンポーネントの外側で取得されていました。このデータ取得はソフトナビゲーション時にもサーバーサイドで実行され、取得したデータをPropsとしてコンポーネントに渡してレンダリングする、いわゆる「Fetch-then-render」という方式が用いられていました。
+第二の理由として、**データ取得方法の変化**が挙げられます。従来のSSRでは、初期表示に必要なデータはフレームワークが提供するデータ取得関数（Next.jsのgetServerSidePropsやRemixのloader関数など）を用いて、コンポーネントの外側で取得されていました。このデータ取得はソフトナビゲーション時にもサーバーサイドで実行され、取得したデータをPropsとしてコンポーネントに渡してレンダリングする、いわゆる「Fetch-then-render」という方式が用いられていました。
 
 **従来: フレームワークによるデータ取得 → コンポーネントのレンダリング**
 
@@ -253,15 +253,16 @@ RSC の SC は、RSC 以前のコンポーネント(つまり CC)と異なり、
 これが、RSCにおいてSSRおよびソフトナビゲーション時のコンポーネントのレンダリング場所に変化が生じた理由です。
 :::
 
-## Pre-rendering(SSG(Static Site Generators))
+## SSG(Static Site Generation)(Pre-rendering)
 
 **用語の意味. build時に HTML ファイル(およびそのコンテンツ)を生成すること、あるいはそのレンダリングパターン**
 
 **レンダリングの意味. HTML ファイルを生成すること**
 
-海外では、SSGはもともと単にPre-renderingとも呼ばれてきました。
+Static Site Generatorsとも。
+海外では、SSGは単にPre-renderingとも呼ばれてきました。
 
-SSGでは、build時にフレームワークによるデータフェッチやコンポーネントのレンダーが行われ、HTML(コンテンツ)が生成されます。静的なHTML(コンテンツ)を取り扱うことになるため、CDNなどで比較的容易にキャッシュができるといった利点が挙げられます。
+SSGでは、build時にフレームワークによるデータフェッチやコンポーネントのレンダーが行われ、HTML(コンテンツ)が生成されます。静的なHTML(コンテンツ)を取り扱うことになるため、CDNなどで比較的容易にキャッシュができるといった利点が挙げられます。また、SSGという用語自体は、[^7]ハイドレーションの有無に限らず広く使われているようです。
 
 :::message
 SSRやSSGをまとめて事前レンダリングと呼ぶことは、国内では近年に至るまで少なからず見かけました。しかし、近年 Next.jsやRemix の機能などで、Pre-renderingという用語はbuild時にレンダリングをする前提の意味で使われています。
@@ -276,23 +277,25 @@ SSG、SSRのアプリケーションでソフトナビゲーションをする�
 ServerComponents(SC)のドキュメントに、[サーバを利用しないサーバーコンポーネント](https://ja.react.dev/reference/rsc/server-components#server-components-without-a-server) という一見意味が分かりにくい段落が存在しますが、ここにおけるサーバーはウェブサーバ(BFFなどに該当するサーバーサイドのランタイム)のことを指しており、SSGのようにbuild時にSCをレンダーすることを指しています。(つまり、ブラウザ上でSCが独立してレンダーするようになるわけではないです。)
 :::
 
+[^7]: [state of js 2024](https://survey.devographics.com/en-US/survey/state-of-js/2024/outline/9)ではSSGは、Static content pre-rendered at build time, with or without a client-side dynamic element　とされています。
+
 
 ## SPA(Single-page application)
 
 CSR、SSR と関連して、場面や話者によって意味合いが大きく変わる用語にSPA(Single-page application) があります。筆者の観測では、この用語は大きく分けて二つの意味で使用されているように見受けられます。
 
-1. ソフトナビゲーションで画面回遊するアプリケーション全般(SSR/SSG と共存する概念)
-2. サーバーサイドでレンダリングをしない CSR のみのアプリケーション(SSR/SSG と排他的関係の概念)
+1. **ソフトナビゲーションで画面回遊するアプリケーション全般(SSR/SSG と共存する概念)**
+2. **サーバーサイドでレンダリングをしない CSR のみのアプリケーション(SSR/SSG と排他的関係の概念)**
 
-1の意味でのSPAは、初回アクセス時を除き、HTMLファイルをサーバーから送信しないアプリケーションを指します。ページ遷移はCSR、つまりJavaScriptによって動的に行われ、あたかも単一のページ内で動作しているかのように見えます。これは、ページ遷移ごとにHTMLファイルをサーバーから取得するMPA（Multi-Page Application）との対比として理解できます。また、サーバーサイドランタイムの有無について定義されておらず、SSR（Server-Side Rendering）やSSG（Static Site Generation）と組み合わせても成り立つ概念になっています。
+1の意味でのSPAは、初回アクセス時を除き、**HTMLファイルをサーバーから送信しないアプリケーション**を指します。ページ遷移はCSR、つまりJavaScriptによって動的に行われ、あたかも単一のページ内で動作しているかのように見えます。これは、ページ遷移ごとにHTMLファイルをサーバーから取得する**MPA（Multi-Page Application）との対比**として理解できます。また、サーバーサイドランタイムの有無について定義されておらず、SSR（Server-Side Rendering）やSSG（Static Site Generation）と組み合わせても成り立つ概念になっています。
 
-2の意味でのSPAは、事前にレンダリングをしない、つまりサーバーサイドランタイムをもたない 完全にブラウザ上でのみ動作する CSR のみのアプリケーションということになります。この用例は海外で特に見られる傾向にあり、例えば State of JavaScript の 2022 年から今年度に至るまでのアンケートでの SPA の定義や Remix の SPA モードという名前の機能の意味では、 SSR/SSG と横並びになるようなものとなっています。
+2の意味でのSPAは、事前にレンダリングをしない、つまりサーバーサイドランタイムをもたない **完全にブラウザ上でのみ動作する CSR のみのアプリケーション**ということになります。この用例は海外で特に見られる傾向にあり、例えば State of JavaScript の [^8]2022 年から[^9]今年度に至るまでのアンケートでの SPA の定義や [Remix の SPA モード](https://remix-docs-ja.techtalk.jp/guides/spa-mode/)という名前の機能の意味では、 SSR/SSG と横並びになるようなものとなっています。
 
 > SPA: Apps that run entirely in the browser
 > MPA: Apps that run entirely in the server, with minimal client-side dynamic behavior
 
-https://survey.devographics.com/en-US/survey/state-of-js/2022/outline/11
-https://survey.devographics.com/en-US/survey/state-of-js/2024/outline/9
+[^8]:(State of JavaScript 2022) https://survey.devographics.com/en-US/survey/state-of-js/2022/outline/11
+[^9]:(State of JavaScript 2024)https://survey.devographics.com/en-US/survey/state-of-js/2024/outline/9
 
 ### SPA、SSR、SSG
 SPAの意味を  **サーバーサイドでレンダリングをしない CSR のみのアプリケーション** の方の意味で捉えた場合、SSR、SSGとの差異は、サイト訪問時に配信するコンテンツ(HTML)のレンダリング方法の違いになります。
@@ -351,7 +354,7 @@ https://zenn.dev/akfm/articles/nextjs-partial-pre-rendering
 
 ## まとめ
 
-今回はレンダリングという言葉を中心にフロントエンドの用語と概念を解説しました。本記事では特定の定義を押し付ける意図はありませんが、内容についてご意見等ございましたら、お気軽にご連絡ください。
+今回はレンダリングという言葉を中心にフロントエンドの用語と概念を解説しました。冒頭に述べた通り、本記事では特定の定義を押し付ける意図はなく、これらの用語は、人や時代背景によって意味が変化しやすいものであると感じています。内容についてご意見であったり感想がございましたら、お気軽にご連絡ください。
 本記事がレンダリングという言葉を通して、皆様のフロントエンドへの理解のお役に立てれば幸いです。
 
 ## 謝辞
