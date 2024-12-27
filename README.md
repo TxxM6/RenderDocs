@@ -266,6 +266,35 @@ CSR、SSR と関連して、場面や話者によって意味合いが大きく�
 https://survey.devographics.com/en-US/survey/state-of-js/2022/outline/11
 https://survey.devographics.com/en-US/survey/state-of-js/2024/outline/9
 
+
+## PPR(Partial Prerendering)
+
+**用語の意味. 同一のルート(ページ)内でビルド時/毎リクエスト時 にサーバーサイドでレンダーされるコンポーネントを組み合わせるレンダリングモデル**
+
+今までの用語と意味の粒度が変わってきている理由としては、PPRのようなレンダリングモデルでは、従来の用語の定義のようにざっくりとページ全体がどのようにレンダリングされているのかという定義の当てはめ方ができなくなってきたためです。
+
+PPRはNext.jsの提供するexperimentalな機能であり、新たなレンダリングモデルです。そしてレンダリングの焦点はサーバーサイド(ビルド時も含む)になります。
+
+PPRを文字通り直訳すると部分的(Partial)に事前レンダリング(Prerendering ≒ SSG)をする機能になりますが、公式のドキュメントでは、staticなコンポーネントとdynamicなコンポーネントを、同一ルート(ページ)内に共存させることを実現する機能だと説明されています。
+
+なお、staticはビルド時にレンダーするSSG相当の意味で、dynamicは毎リクエスト毎に(サーバーランタイムで)レンダーされるSSR相当の意味です。
+
+従来のアプリケーションでは、アプリケーション全体あるいはページごとに、static/dynamicなレンダリングをすることを選択する必要がありましたが、PPRにより、ページ内でもより細かくコンポーネントのレンダーの仕方を設定できるようになりました。
+> For most web apps built today, you either choose between static and dynamic rendering for your entire application, or for a specific route.
+
+> (DeepL 翻訳)
+> 現在構築されているほとんどのWebアプリケーションでは、アプリケーション全体または特定のルートに対して、静的レンダリングと動的レンダリングのどちらかを選択します。
+
+https://nextjs.org/learn/dashboard-app/partial-prerendering#static-vs-dynamic-routes
+
+
+:::message
+ページ内でレンダリング方法を細かく設定できるのだからアイランドアーキテクチャも似たような概念なのではないかという疑問に対して、筆者はどちらかというとアイランドアーキテクチャはRSCのほうが近い概念だと認識しています。アイランドアーキテクチャとPPRの関係について気になる方は以下の記事を参考にしてください。
+:::
+
+https://zenn.dev/akfm/articles/ppr-vs-islands-architecture
+
+
 ## まとめ
 
 今回はレンダリングという言葉を中心にフロントエンドの用語と概念を解説しました。本記事では特定の定義を押し付ける意図はありませんが、内容についてご意見等ございましたら、お気軽にご連絡ください。
