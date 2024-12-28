@@ -270,27 +270,26 @@ RSC の SC は、RSC 以前のコンポーネント(つまり CC)と異なり、
 
 **用語の意味: ビルド時に HTML ファイル(およびそのコンテンツ)を生成すること、あるいはそのレンダリングパターン**
 
-**レンダリングの意味: HTML ファイルを生成すること**
+Static Site Generatorsとも。海外では、SSGは単にPre-renderingとも呼ばれてきました。
 
-Static Site Generatorsとも。
-海外では、SSGは単にPre-renderingとも呼ばれてきました。
+SSGでは、ビルド時にフレームワークによるデータフェッチやコンポーネントのレンダーが行われ、HTML(コンテンツ)が生成されます。よってSSR同様、SSGにおける「レンダリング」とは　**HTML ファイルを生成すること** と言えます。
 
-SSGでは、ビルド時にフレームワークによるデータフェッチやコンポーネントのレンダーが行われ、HTML(コンテンツ)が生成されます。静的なHTML(コンテンツ)を取り扱うことになるため、CDNなどで比較的容易にキャッシュができるといった利点が挙げられます。また、SSGという用語自体は、[^7]ハイドレーションの有無に限らず広く使われているようです。
+静的なHTML(コンテンツ)を取り扱うことになるため、CDNなどで比較的容易にキャッシュができるといった利点が挙げられます。また、SSGという用語自体は、ハイドレーションの有無に限らず広く使われているようです[^stateOfJs2024]。
+  
 
+### 事前レンダリング
+Pre-renderingという呼び方をそのまま日本語に直すと **事前レンダリング** となりますが、この言葉はSSRやSSGをまとめて指す言葉として少なからず使われてきました。クライアントサイドにレスポンスが返却されるよりも前の段階でレンダリングされるという意味合いであると捉えることができそうです。
+しかし、近年 Next.jsやRemix の機能などで、Pre-renderingという用語は**ビルド時にレンダリングする意味**で明確に使われているように、海外でのPre-renderingではSSRを包含した意味はないようです。この場合の「事前」は**リクエスト時よりも前**、つまりビルド時を指していると解釈できます。
+  
 :::message
-SSRやSSGをまとめて事前レンダリングと呼ぶことは、国内では近年に至るまで少なからず見かけました。しかし、近年 Next.jsやRemix の機能などで、Pre-renderingという用語はビルド時にレンダリングをする前提の意味で使われています。
-この場合、「事前」はリクエスト時よりも前、つまりビルド時を指していると解釈できます。
+SSG、SSRのアプリケーションでソフトナビゲーションをする際は、Webサーバーからは初回表示とは異なりHTMLファイルではなくjsonデータなどが配信されます。よってSSGの場合はビルド時に初回表示用のHTMLとCSR用のファイルの両方が生成されることになります。
 :::
 
 :::message
-SSG、SSRのアプリケーションでソフトナビゲーションをする際は、Webサーバーからは初期表示とは異なりHTMLファイルではなくjsonデータなどが配信されます。よってSSGの場合はビルド時に、サイト訪問時用のHTMLとCSR時用のファイルの両方が生成されることになります。
+ServerComponents(SC)のドキュメントに、[サーバを利用しないサーバーコンポーネント](https://ja.react.dev/reference/rsc/server-components#server-components-without-a-server) という一見意味が分かりにくい段落が存在しますが、ここにおけるサーバーはウェブサーバ(BFFなどに該当するサーバーサイドのランタイム)のことを指しており、SSGのようにビルド時にSCをレンダーすることを指しています。(つまり、レンダー前のSCのコードがブラウザに渡って、独立してレンダーするようになるわけではありません。)
 :::
 
-:::message
-ServerComponents(SC)のドキュメントに、[サーバを利用しないサーバーコンポーネント](https://ja.react.dev/reference/rsc/server-components#server-components-without-a-server) という一見意味が分かりにくい段落が存在しますが、ここにおけるサーバーはウェブサーバ(BFFなどに該当するサーバーサイドのランタイム)のことを指しており、SSGのようにビルド時にSCをレンダーすることを指しています。(つまり、ブラウザ上でSCが独立してレンダーするようになるわけではないです。)
-:::
-
-[^7]: [state of js 2024](https://survey.devographics.com/en-US/survey/state-of-js/2024/outline/9)ではSSGは、Static content pre-rendered at ビルド time, with or without a client-side dynamic element　とされています。
+[^stateOfJs2024]: [state of js 2024](https://survey.devographics.com/en-US/survey/state-of-js/2024/outline/9)ではSSGは、*Static content pre-rendered at ビルド time, with or without a client-side dynamic element*　とされています。
 
 
 ## SPA(Single-page application)
