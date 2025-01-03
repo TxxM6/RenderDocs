@@ -138,40 +138,43 @@ CSRにおける「レンダリング」とは　**クライアントサイドで
  
 現在でもCSRという用語は、初期のこのパターンを指して使われ続けています。例えば、Next.jsの[Client-side Rendering (CSR)](https://nextjs.org/docs/pages/building-your-application/rendering/client-side-rendering)のページでも、ブラウザは最小限のHTML(minimal HTML)をダウンロードし、ブラウザのJavaScriptがDOMを更新するパターンをCSRであるとしています。[^NextjsにおけるCSR]
 
+![](https://images.prismic.io/prismic-main/ZjhPlEMTzAJOCi_n_CSR.png?auto=format%2Ccompress&fit=max&w=1920)
+*CSRの概略図(Client-side Rendering (CSR) vs. Server-side Rendering (SSR)より引用 ) https://prismic.io/blog/client-side-vs-server-side-rendering*
+
 ### 2つ目の意味: クライアントサイドで DOM を更新すること
 「初回表示時」や「ソフトナビゲーション時」など特定の場面で、**クライアントサイドでコンテンツ生成およびDOMを更新すること**を指します。
-初回表示におけるCSRは、上述した空のHTMLレスポンスがWebサーバーから返却されるような挙動を指し、ナビゲーションがCSRである場合は、ソフトナビゲーションや[Client-side navigation](https://nextjs.org/learn-pages-router/basics/navigate-between-pages/client-side)と同等の意味になります。(この2つ目の意味でCSRを使う場合、１つ目の意味のようなパターンは　CSR Only　のアプリケーションであるという呼び方ができます。)
+初回表示におけるCSRは、上述した空のHTMLレスポンスがWebサーバーから返却されるような挙動を指し、ナビゲーションがCSRである場合は、ソフトナビゲーションや[Client-side navigation](https://nextjs.org/learn-pages-router/basics/navigate-between-pages/client-side)と同等の意味になります。
 
-なお、初回表示時に空の HTML を返すアプリケーション(SPA ≒ CSR Only)の欠点の一つに、SEO 対策が困難であるという点がありました。（現在ではGoogleではSEOの問題は改善されたようです。また、CSR Onlyのアプリケーションにはパフォーマンスやデータ転送の効率といった課題があります）。
+(この2つ目の意味でCSRを使う場合、１つ目の意味のようなパターンは　CSR Only　のアプリケーションであるという呼び方ができます。)
+
+なお、初回表示時に空の HTML を返すアプリケーション(SPA ≒ CSR Only)の欠点の一つに、SEO 対策が困難であるという点がありました。（現在ではGoogleのクローラではJavaScriptを実行できるためSEOの問題は改善されたようです。また、CSR Onlyのアプリケーションにはパフォーマンスやデータ転送の効率といった課題があります）。
 
 [^MPA]:MPA: Multi-page application。画面遷移時に新しい HTML ファイルが送られ、画面全体が書き換わるようなアプリケーションのこと。
-
 [^NextjsにおけるCSR]:NextjsにおけるCSRでは、NextJsのサーバー側のデータ取得機能である　getStaticProps や getServerSidePropsを使わず、クライアントサイドに寄せることで典型的なCSRの挙動を再現しています。
 
 ## Server-Side Rendering(SSR)
 
-**用語の意味: サーバーサイドで、毎ページリクエスト時に HTML ファイル(およびそのコンテンツ)を生成すること、あるいはそのレンダリングパターン**
+**意味**
+1.**リクエスト時にサーバーサイドでHTMLを生成すること**
+2.**リクエスト時にサーバーサイドでHTMLを生成するレンダリングパターン全般**
+3.**初回表示時のリクエスト時にはHTMLをサーバーサイドで生成し、クライアントサイドでハイドレーションを行うレンダリングパターン**
 
-レンダリング結果として得られるものは、HTML ファイル(およびそのコンテンツ)であるため、SSRにおける「レンダリング」とは　**HTML ファイルを生成すること** と言えます。
-SSR をする主な目的は以下の二つになります。
+SSRにおける「レンダリング」とは　**リクエスト時にサーバーサイドで HTMLを生成すること** を指します。SSR をする主な目的は以下の2点です:
 
 1. 動的サイト[^動的サイト]を作ること
-2. コンテンツを含む HTML ファイルを作ること
+2. コンテンツを含む HTML を作ること
 
-SSR という言葉は CSR(SPA)の登場と同時にレトロ二ム[^レトロニム]として生まれたものです。しかし現在では、CSROnly[^CSROnly]では解決できない課題を補う手法として認識されています(つまり、SSRするアプリケーションではCSRもします。)。
-現代のSSRを行うフレームワークにおいて、サーバーサイドでHTMLファイルを生成するのは初回表示時(サイト訪問時)であり、その後サイト内を回遊する際にはソフトナビゲーション(CSR)をします。[^注意書き-SSR]
-このようなレンダリングパターンは、元々 SSR with Hydration と呼ばれていたものであり、現在はそれを単に SSR と呼ぶようになりました。この章では、それらの変遷について述べていきます。
+SSR という言葉は CSR(SPA)が登場したときに生まれた**レトロ二ム[^レトロニム]**です。しかし現在では、CSR だけでは解決できない課題を補うために、**サーバーサイドを活用するモダンなレンダリングパターン(上記3の意味)を指してSSRと呼ぶようになりました。**このモダンなパターンは、元々 「**SSR with Hydration**」 と呼ばれていたもので、サーバーサイドでの HTML 生成は初回表示時に限られ、その後のナビゲーションはソフトナビゲーションで行われます。
+
+この章では、SSRのアプリケーションやその言葉の意味の変遷について述べていきます。
 
 :::message
-サーバーサイドで生成できる HTML ファイルは静的なものにすぎないため、ブラウザ上でも再度コードを実行してページをインタラクティブにする ハイドレーション(Hydration) という工程が必要になります。
+サーバーサイドで生成できる HTML ファイルは静的なものにすぎないため、Reactベースのフレームワークでは、ブラウザ上でも再度コードを実行してページをインタラクティブにする ハイドレーション(Hydration) という工程が必要になります。
 :::
 
 :::message
-(SSR の意味として、ラフにコンポーネントをサーバーサイドでレンダーすることを SSR という使われ方がされることもあります。)
+(ラフにReactなどのコンポーネントをサーバーサイドでレンダリングすることを SSR という使われ方がされることもあります。)
 :::
-
-[^注意書き-SSR]: 当記事では、基本は CSR で画面遷移をしつつ、ページ訪問時には HTML をオンデマンドにサーバーサイドで生成するようなアプリケーションのことを SSR あるいは SSR(SSR with hydration) であるとしていますが、例えば、そこから敢えてソフトナビゲーションを封印した場合や、CSR が登場する前のような MPA はなんと呼ぶのかを取り扱うと議論が複雑化してしまうため触れません。
-
 
 [^動的サイト]:動的サイト: アクセスしたユーザーの属性や条件に応じて、表示内容を動的に生成して変化させるWebサイト。対義語の静的サイトは、「ユーザーや時間帯などによらず同じ内容を表示させるWebサイト」という意味。
 
@@ -179,23 +182,32 @@ SSR という言葉は CSR(SPA)の登場と同時にレトロ二ム[^レトロ�
 
 #### 初期の SSR の意味
 
-**意味: サーバーサイドで HTML ファイルを生成すること**
+**意味: リクエスト時にサーバーサイドで HTML ファイルを生成すること**
 
-もともと SSR という言葉は、SPA(Single-page application)が台頭してきたときに、CSR(Client-Side Rendering)のレトロニム[^レトロニム]として使われ始めた言葉のようです。
-この頃の SSR は、サーバーサイドのテンプレートエンジン(Java,PHP,Ruby on Rails 等)で HTML ファイルを生成する従来の方法を指していました。
+もともと SSR という言葉は、[Single-page application（SPA）](#)、が台頭してきたときに、**CSR(Client-Side Rendering)のレトロニム**[^レトロニム] として使われ始めた言葉のようです。
+CSR のようにクライアントサイドで コンテンツを生成しDOM を直接書き換える方法は一般的ではなく、この頃の SSR は、サーバーサイドのテンプレートエンジン(Java,PHP,Ruby on Rails 等)で HTMLを生成する従来の手法を指していました。
+この方法では、初回表示もナビゲーション時もサーバーサイドでコンテンツを含む HTML を生成し、ブラウザでは HTML 全体を入れ替える形で画面を更新します(MPA[^MPA])。
 
-当時はCSR のようにサイト訪問時や画面遷移時にクライアントサイドで DOM を直接書き換えてコンテンツを作る方法は一般的ではなく、従来の方法ではサーバーサイドでコンテンツを含んだ HTML ファイルを配信して、ブラウザでは HTML ファイルごと入れ替えるような形で画面を書き換えていました。
+CSRやSSRという言葉が使われ始めたのは、そもそもReactやNext.jsなどが台頭してきた後なのでは?と疑問を持つ方も多いと思います。
+しかし、以下の記事は、Reactや次章で紹介するRendrが登場する前の記事であり、 「**Client-Side RenderingからServer-Side Renderingに戻す**」 という内容になっています。
+
+https://www.openmymind.net/2012/5/30/Client-Side-vs-Server-Side-Rendering/
+
+
+また、以下の最近の記事でも古典的なレンダリングパターンもServer-Side Renderingであると解釈しています。(なお、この記事ではSSRとCSRは排他的な関係ではなく、例えばSSR with Hydration のパターンはSSRとCSRが合体した姿であると解釈しています。) 
+
+https://484.cs.uic.edu/readings/chapter-3-server-side-web-development/full-stack-react/
 
 [^レトロニム]: レトロニム: 時代の変化により新しい事物が生まれたことから、既存の事物を新しいものと区別するため「後から」つくられた言葉
 
 #### SSR with Hydration の出現
 
-現在のような SSR フレームワークの起源の一つであると考えられるものとして Airbnb 社の Backbone.js のフレームワーク、**Rendr** があります。
+現在のような SSR フレームワークの起源の一つであると考えられるものとして Airbnb 社の Backbone.js ベースのフレームワーク、**Rendr** があります。
 Backbone.js は、クライアントサイドの MVC モデルを採用した、古典的な SPA フレームワークの一つです。
 
-当時の CSROnly のアプリケーションでは、ページ訪問時にコンテンツが空の HTML ファイルが最初に送られるため、**SEO**において課題がありました。
+当時の CSR Only のアプリケーションでは、ページ訪問時にコンテンツが空の HTML ファイルが最初に送られるため、**SEO**において課題がありました。
 
-その対策のために、サイト訪問時用に 別言語(Ruby など)で開発したサーバーを用意したり、ヘッドレスブラウザのようなものを挟み JavaScript を事前に実行するなどをして、 コンテンツを含む HTML を生成していました。これがいわゆる **ダイナミックレンダリング** と呼ばれる手法です。
+その対策のために、サイト訪問時用に 別言語(Ruby など)で開発したサーバーを用意したり、ヘッドレスブラウザのようなものを挟み JavaScript を事前に実行する(**ダイナミックレンダリング**)などをして、 コンテンツを含む HTML を生成していました。
 
 (ダイナミックレンダリング)
 https://developers.google.com/search/docs/crawling-indexing/JavaScript/dynamic-rendering?hl=ja
@@ -203,14 +215,14 @@ https://developers.google.com/search/docs/crawling-indexing/JavaScript/dynamic-r
 (JavaScript を実行して HTML を生成してくれるサービス)
 https://prerender.io/
 
-そこで Rendr が採用したアプローチは、Node.js を活用することで、それまで Ruby と JavaScript で重複していたロジックを一本化し、クライアントサイドとサーバーサイドの双方で実行可能な共通コードを実現することでした。
+そこで Rendr が採用したアプローチは、Node.js を活用することで、それまで Ruby と JavaScript で重複していたロジックを一本化し、**クライアントサイドとサーバーサイドの双方で実行可能な共通コードを実現することでした。**
 
 :::message
-当時は**同じコード**がサーバーサイドでもクライアントサイドでも実行されることを **Isomorphic**と呼びました。現在でもサーバーサイド、クライアントサイドの両側で実行される概念に対して Isomorphic という言葉が使われることがあります。[参考: Isomorphic Loaders](https://frontendmasters.com/blog/introducing-tanstack-start/#isomorphic-loaders)
+当時は**同じコード**がサーバーサイドでもクライアントサイドでも実行されることを **Isomorphic**　と呼びました。現在でもサーバーサイド、クライアントサイドの両側で実行される概念に対して Isomorphic という言葉が使われることがあります。[参考: Isomorphic Loaders](https://frontendmasters.com/blog/introducing-tanstack-start/#isomorphic-loaders)
 :::
 
 
-なお、Rendr の作者の Rendr の公開スライドに、すでに "Hydrate" という用語が登場しており、クライアントサイドで要素をインタラクティブにするフェーズを "Hydrate" と呼ぶ文化が、この時点で存在していたことが伺えます。
+なお、Rendr の作者の Rendr の公開スライドに、すでに "Hydrate" という用語が登場しており、クライアントサイドで要素をインタラクティブにするフェーズを ハイドレーション と呼ぶ文化が、この時点で存在していたことが伺えます。
 
 以下のRenderの記事は、React が公開される 2013 年 5 月以前に書かれたものであり、現在のような SSR フレームワークの形態がその時点ですでに完成していたことを示唆しています。しかし、Rendr は React の普及によって主流となることはなく、Airbnb も最終的に React へ移行したようです。
 
@@ -218,36 +230,35 @@ https://medium.com/airbnb-engineering/our-first-node-js-app-backbone-on-the-clie
 
 https://www.slideshare.net/slideshow/introducing-rendr-run-your-backbonejs-apps-on-the-client-and-server/19106546
 
-このような、サーバーサイドとクライアントサイドで共通のコードを実行するタイプの SSR は、従来型の SSR と区別するため、**SSR with Hydration** と呼ばれることもありました。
-
+このような、サーバーサイドとクライアントサイドで共通のコードを実行するタイプの SSR は、従来型の SSR と区別するため、**SSR with Hydration** と呼ばれました。
 
 #### 現在の SSR
 
-**用語の意味(再掲): サーバーサイドで、毎ページリクエスト時に HTML ファイル(およびそのコンテンツ)を生成すること、あるいはそのレンダリングパターン**
-
 現在では、フロントエンド開発において React のような SPA の技術が普及し、さらには Next.js や Remix といった サーバーサイドでも JavaScript/React のコードが動作するフレームワークが主流となりました。これらのフレームワークはサーバーサイドにランタイムを設けることで、SPA の利点を享受しつつ、従来のSPAでは解決が難しかった課題の克服や最適化を実現しようとしています。
-
 近年 SSR が言及される文脈は、主にこれらのフレームワークに関連する場合が多く、SPA登場当初とは想定場面などの前提が変化したため、初期に SSR with Hydration と呼ばれていたものが、現在では単に SSR と呼ばれるようになってきています。
+
+![](https://images.prismic.io/prismic-main/ZfuQggmzsfHOGJkR_ssr.png?auto=format%2Ccompress&fit=max&w=3840)
+*SSRの概略図(Client-side Rendering (CSR) vs. Server-side Rendering (SSR)より引用 ) https://prismic.io/blog/client-side-vs-server-side-rendering*
 
 もともと SSR という言葉が誕生したのは、CSR（SPA）技術が台頭し、サーバーサイドで行われていたコンテンツ生成がクライアントサイドへ移行した時期でした。
 しかし、現代におけるSSRという用語は、**本来クライアントサイドで実行されるコード**を、**サイト訪問時に限りサーバーサイドでレンダリングする**という、方向性の逆転が起きた後の意味合いを持つようになったと解釈できそうです。
 
 :::message
 Astro と SSR
-ここまでSSRという用語が基本的にソフトナビゲーションなどの概念とセットになるかのように述べてきました。
+ここまでモダンなフレームワークにおけるSSRという用語が基本的にソフトナビゲーションなどの概念とセットになるかのように述べてきました。
 MPA[^MPA] のフレームワークである Astro でも SSR は [On-demand Rendering](https://docs.astro.ビルド/en/guides/on-demand-rendering/) という機能として存在しており、ページリクエストに応じてサーバーサイドで HTML を生成する仕組みを指します。 
-Astro はもともと、Static Site Generation (SSG) に特化したフレームワークとして登場し、SPA に対抗し、従来の MPA のようにページ遷移を行いながらも、JavaScript 以外の言語との二重開発が不要であることを利点としています。
-SSG の静的ページのみであれば、ビルド時に生成した静的 HTML を配信し、外部 API はブラウザで処理できるため、Node.js 等のランタイムは不要ですが、On-demand Rendering が追加され、本来持たなかったサーバーサイドランタイムを持つという手段をとることで、これまでクライアントサイドで行っていた動的なコンテンツ生成 (CSR) をサーバーサイドで行い、コンテンツを含む HTML ファイルを配信できるようになりました。
-よって Astro の On-demand Rendering が解決した問題も 動的サイトをサーバーサイドから直接配信したいという点で、Next.Js などの SSR with Hydration が解決したかった課題と全く違った方向を向いているわけではないと筆者は考えています。　
+Astro は [Static Site Generation (SSG)](#ssg(static-site-generation)(別称:-pre-rendering)) に特化したフレームワークとして登場し、SPA に対抗し、従来の MPA のようにページ遷移を行いながらも、JavaScript 以外の言語との二重開発が不要であることを利点としています。
+SSG の静的ページのみであれば、ビルド時に生成した静的 HTML を配信し、外部 API はブラウザで処理できるため、Node.js 等のランタイムは不要です。しかしOn-demand Rendering が追加され、本来持たなかったサーバーサイドランタイムを持つという手段をとることで、これまでクライアントサイドで行っていた動的なコンテンツ生成 (CSR) をサーバーサイドで行い、コンテンツを含む HTML ファイルを配信できるようになりました。
+よって Astro の On-demand Rendering が解決した問題も MPAでありながらも、動的サイトをサーバーサイドから直接配信したいという点で、Next.Js などの SSR with Hydration と共通する点が多いと筆者は考えています。　
 :::
 
 
 ### RSC の ServerComponents は SSR なのか？
 
-RSC（React Server Components）の登場以前は、コンポーネントは基本的にすべてクライアントサイドでレンダーされ、SSRや SSG ではサーバーサイド または ビルド時にも実行されていました。しかし、RSC では従来通りの **Client Components(CC)**に加え、完全にサーバーサイド または ビルド時のみ実行される **Server Components(SC)**が導入されました。
+Reactにおいて RSC（React Server Components）の登場以前は、コンポーネントは基本的にすべてクライアントサイドでレンダーされ、SSRや SSG ではサーバーサイド または ビルド時にも実行されていました。しかし、RSC では従来通りの **Client Components(CC)**に加え、完全にサーバーサイド または ビルド時のみ実行される **Server Components(SC)**が導入されました。
 
 では、**SC は SSR と同じ概念なのか？** という疑問については、React 公式は、併用できる別の概念であると説明しています。
-SSR はサーバーサイドで HTML を事前生成する技術を指し、SC のレンダリングをそのまま SSR と呼ぶわけではありません。
+SSR はサーバーサイドで HTML を事前に生成する技術を指し、SC のレンダリングをそのまま SSR と呼ぶわけではありません。
 
 React RFC によると次のように述べられています：
 
