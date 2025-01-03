@@ -112,7 +112,7 @@ https://zenn.dev/aishift/articles/d046335a98bc34
 
 
 
-## CSR(Client-Side Rendering)において
+## Client-Side Rendering(CSR)
 
 **意味**
 1. **クライアントサイドのみで動作するレンダリングパターン(≒SPA)**
@@ -148,7 +148,7 @@ CSRにおける「レンダリング」とは　**クライアントサイドで
 
 [^NextjsにおけるCSR]:NextjsにおけるCSRでは、NextJsのサーバー側のデータ取得機能である　getStaticProps や getServerSidePropsを使わず、クライアントサイドに寄せることで典型的なCSRの挙動を再現しています。
 
-## SSR(Server-Side Rendering)において
+## Server-Side Rendering(SSR)
 
 **用語の意味: サーバーサイドで、毎ページリクエスト時に HTML ファイル(およびそのコンテンツ)を生成すること、あるいはそのレンダリングパターン**
 
@@ -277,7 +277,7 @@ RSC の SC は、RSC 以前のコンポーネント(つまり CC)と異なり、
 以上が、RSCにおいてSSRおよびソフトナビゲーション時のコンポーネントのレンダーが行われる場所に変化が生じた理由になります。
 :::
 
-## SSG(Static Site Generation)(別称: Pre-rendering)
+## Static Site Generation(SSG)(別称: Pre-rendering)
 
 **用語の意味: ビルド時に HTML ファイル(およびそのコンテンツ)を生成すること、あるいはそのレンダリングパターン**
 
@@ -303,7 +303,7 @@ ServerComponents(SC)のドキュメントに、[サーバを利用しないサ�
 [^stateOfJs2024]: [state of js 2024](https://survey.devographics.com/en-US/survey/state-of-js/2024/outline/9)ではSSGは、*Static content pre-rendered at ビルド time, with or without a client-side dynamic element*　とされています。
 
 
-## SPA(Single-page application)
+## Single-page application(SPA)
 
 CSR、SSR と関連して、場面や話者によって意味合いが大きく変わる用語にSPA(Single-page application) があります。筆者の観測では、この用語は大きく分けて二つの意味で使用されているように見受けられます。
 
