@@ -306,24 +306,24 @@ RSC の SC は、RSC 以前のコンポーネント(つまり CC)と異なり、
 
 Static Site Generatorsとも。海外では、SSGは単にPre-renderingとも呼ばれてきました。
 
-SSGでは、ビルド時にフレームワークによるデータフェッチやコンポーネントのレンダーが行われ、HTML(コンテンツ)が生成されます。よってSSR同様、SSGにおける「レンダリング」とは　**HTML ファイルを生成すること** と言えます。
+SSGでは、ビルド時にフレームワークによるデータフェッチやコンポーネントのレンダーが行われ、HTML(コンテンツ)が生成されます。よってSSGにおける「レンダリング」とは　**HTML を生成すること** と言えます。
 
-静的なHTML(コンテンツ)を取り扱うことになるため、CDNなどで比較的容易にキャッシュができるといった利点が挙げられます。また、SSGという用語自体は、ハイドレーションの有無に限らず広く使われているようです[^stateOfJs2024]。
+staticという名前の通り静的なHTML(コンテンツ)を取り扱うことになるため、CDNなどで比較的容易にキャッシュができるといった利点が挙げられますが、SSRのようにリクエストに応じてレスポンスを都度生成することはできません。また、SSGという用語自体は、ハイドレーションの有無に限らず広く使われているようです[^stateOfJs2024]。
   
 
 ### 事前レンダリング
-Pre-renderingという呼び方をそのまま日本語に直すと **事前レンダリング** となりますが、この言葉はSSRやSSGをまとめて指す言葉として少なからず使われてきました。クライアントサイドにレスポンスが返却されるよりも前の段階でレンダリングされるという意味合いであると捉えることができそうです。
+Pre-renderingという呼び方をそのまま日本語に直すと **事前レンダリング** となりますが、この言葉はSSR、SSGをまとめて指す言葉として少なからず使われてきました。クライアントサイドにレスポンスが返却されるよりも前の段階でレンダリングされるという意味合いであると捉えることができそうです。
 しかし、近年 Next.jsやRemix の機能などで、Pre-renderingという用語は**ビルド時にレンダリングする意味**で明確に使われているように、海外でのPre-renderingではSSRを包含した意味はないようです。この場合の「事前」は**リクエスト時よりも前**、つまりビルド時を指していると解釈できます。
   
 :::message
-SSG、SSRのアプリケーションでソフトナビゲーションをする際は、Webサーバーからは初回表示とは異なりHTMLファイルではなくjsonデータなどが配信されます。よってSSGの場合はビルド時に初回表示用のHTMLとCSR用のファイルの両方が生成されることになります。
+SSG、SSRのアプリケーションでソフトナビゲーションをする際は、Webサーバーからは初回表示とは異なりHTMLファイルではなくjsonデータなどが配信されます。よってSSGの場合はビルド時に初回表示用のHTMLとソフトナビゲーション用のファイルの両方が生成されることになります。
 :::
 
 :::message
-ServerComponents(SC)のドキュメントに、[サーバを利用しないサーバーコンポーネント](https://ja.react.dev/reference/rsc/server-components#server-components-without-a-server) という一見意味が分かりにくい段落が存在しますが、ここにおけるサーバーはウェブサーバ(BFFなどに該当するサーバーサイドのランタイム)のことを指しており、SSGのようにビルド時にSCをレンダーすることを指しています。(つまり、レンダー前のSCのコードがブラウザに渡って、独立してレンダーするようになるわけではありません。)
+ServerComponents(SC)のドキュメントに、[サーバを利用しないサーバーコンポーネント](https://ja.react.dev/reference/rsc/server-components#server-components-without-a-server) という~~一見意味が分かりにくい~~段落が存在しますが、ここにおけるサーバーはWebサーバ(BFFなどに該当するサーバーサイドのランタイム)のことを指しており、SSGのようにビルド時にSCを実行することを指しています。(つまり、実行前のSCのコードがブラウザに渡って、クライアントサイドで実行されるわけではありません。)
 :::
 
-[^stateOfJs2024]: [state of js 2024](https://survey.devographics.com/en-US/survey/state-of-js/2024/outline/9)ではSSGは、*Static content pre-rendered at ビルド time, with or without a client-side dynamic element*　とされています。
+[^stateOfJs2024]: [state of js 2024](https://survey.devographics.com/en-US/survey/state-of-js/2024/outline/9)ではSSGは、*Static content pre-rendered at build time, with or without a client-side dynamic element*　とされています。
 
 
 ## Single-page application(SPA)
