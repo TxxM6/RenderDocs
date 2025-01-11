@@ -111,9 +111,10 @@ CSRが登場する前の**従来のWebアプリケーション**では、初回�
 
 
 :::message
-CSRが採用されているアプリケーションは、クライアントサイドだけで動作したり、SPAのようにソフトナビゲーションものであると混同されるケースは少なくないように思えます。まれに「SPA（CSR）」のような表記を目にすることがあります。
-これは、主要なCSRフレームワークが初回表示時にCSRを採用する場合、サーバーサイドランタイムを持たず、CSRを用いるアプリケーションがソフトナビゲーションを実装していることが多いためと考えられます
-例えば、Next.js  Pages Routerの[Client-side Rendering (CSR)](https://nextjs.org/docs/pages/building-your-application/rendering/client-side-rendering)のページでも、ブラウザは最小限のHTML(minimal HTML)をダウンロードし、ブラウザのJavaScriptがDOMを更新するパターンが取り上げられています。[^NextjsにおけるCSR]後述するSSRなどとの比較では初回表示時の差分が主に観点となり、この場合のCSRのアプリケーションはサーバーサイドランタイムを持たないSPAであることが多いです。
+CSRの意味が誤解されやすい場面として、CSRが使われているアプリケーションのことを、クライアントサイドだけで動作したり、SPAのようにソフトナビゲーションものであると混同されるケースが挙げられると思います。
+これは、CSR という言葉が使われる場面は、初回表示のことであることが多く、初期のSPAのようなクライアントサイドのみで動くアプリケーションが説明に使われることが多いためだと推察します。
+例えば、Next.js  Pages Routerの[Client-side Rendering (CSR)](https://nextjs.org/docs/pages/building-your-application/rendering/client-side-rendering)のページでも、ブラウザは最小限のHTML(minimal HTML)をダウンロードし、ブラウザのJavaScriptがDOMを更新するパターンが取り上げられています。
+
 しかし、CSRはあくまでページを表示する場面においての手法であり、初回表示時にサーバーサイドが活用されていても、ナビゲーション時にCSRが用いられることもあります。また、CSRはハードナビゲーションが行われる状況でも成り立つのに対し、SPAはハードナビゲーションと相容れない関係であります。
 :::
 
@@ -136,13 +137,9 @@ SSRにおける「レンダリング」とは **リクエスト時にサーバ�
 
 WebクライアントからのページリクエストごとにHTMLレスポンスを生成する点から、「Request-Time Rendering」 と呼んだ方が分かりやすいかもしれません。
 
-SSR という言葉は CSR(あるいは　Single-Page Application(SPA))が登場したときに生まれた**レトロ二ム**[^レトロニム]でした。しかし現在では、CSR だけでは解決できない課題を補うために、**サーバーサイドを活用するモダンなレンダリングモデルを指してSSRと呼ぶようになりました**(上記2の意味)。このパターンは、元々 「**SSR with Hydration**」 と呼ばれていたものです。
+SSR という言葉は CSRが登場したときに生まれた**レトロ二ム**[^レトロニム]でした。しかし現在では、CSR だけでは解決できない課題を補うために、**サーバーサイドを活用するモダンなレンダリングモデルを指してSSRと呼ぶようになりました**(上記2の意味)。このパターンは、元々 「**SSR with Hydration**」 と呼ばれていたものです。
 
 この章では、SSRのアプリケーションや用語の意味の変遷について述べていきます。
-
-:::message
-(ラフにReactなどのコンポーネントをサーバーサイドでレンダリングすることを SSR という使われ方がされることもあります。)
-:::
 
 [^動的サイト]:動的サイト: アクセスしたユーザーの属性や条件に応じて、表示内容を動的に生成して変化させるWebサイト。対義語の静的サイトは、「ユーザーや時間帯などによらず同じ内容を表示させるWebサイト」という意味。
 
@@ -161,7 +158,7 @@ CSRやSSRという言葉が使われ始めたのは、そもそもReactやNext.j
 https://www.openmymind.net/2012/5/30/Client-Side-vs-Server-Side-Rendering/
 
 
-また、以下の最近の記事でも古典的なレンダリングモデルもServer-Side Renderingであると解釈しています。(なお、この記事では例えばSSR with Hydration のパターンはSSRとCSRが合体した姿であると解釈しています。) 
+また、以下の最近の記事でも古典的なレンダリングモデルもServer-Side Renderingであると解釈しています。
 https://484.cs.uic.edu/readings/chapter-3-server-side-web-development/full-stack-react/
 
 [^レトロニム]: レトロニム: 時代の変化により新しい事物が生まれたことから、既存の事物を新しいものと区別するため「後から」つくられた言葉
@@ -273,7 +270,7 @@ SSG、SSRのアプリケーションでソフトナビゲーションをする�
 :::
 
 :::message
-ServerComponents(SC)のドキュメントに、[サーバを利用しないサーバーコンポーネント](https://ja.react.dev/reference/rsc/server-components#server-components-without-a-server) という~~一見意味が分かりにくい~~段落が存在しますが、ここにおけるサーバーはWebサーバー(BFFなどに該当するサーバーサイドのランタイム)のことを指しており、SSGのようにビルド時にSCを実行することを指しています。(つまり、実行前のSCのコードがブラウザに渡って、クライアントサイドで実行されるわけではありません。)
+ServerComponents(SC)のドキュメントに、[サーバを利用しないサーバーコンポーネント](https://ja.react.dev/reference/rsc/server-components#server-components-without-a-server) という~~一見意味が分かりにくい~~段落が存在します。ここにおける「サーバー」はWebサーバー(BFFなどに該当するサーバーサイドのランタイム)のことであり、このドキュメントはSSGのようにビルド時にSCを実行することを指しています。(つまり、実行前のSCのコードがブラウザに渡って、クライアントサイドで実行されるわけではありません。)
 :::
 
 [^stateOfJs2024]: [state of js 2024](https://survey.devographics.com/en-US/survey/state-of-js/2024/outline/9)ではSSGは、*Static content pre-rendered at build time, with or without a client-side dynamic element*　とされています。
@@ -332,7 +329,7 @@ Reactなどの場合、SSR、SSGではブラウザ上でもコンポーネント
 1. **ページ遷移時に新たにHTMLレスポンスが送信され、画面全体が再読み込みされる**
 2. **HTML(コンテンツ)はブラウザ上ではなくサーバー側で生成される**
 
-MPAは、SPAに対して従来からあったアプリケーションを指す形で誕生したレトロニムです。従来の手法では上記のような特徴を持っており、近年でもMPAが「SPAより昔からある」パターンとして説明されることがあります。
+MPAは、SPAに対して従来からあったアプリケーションを指す形で誕生したレトロニム[^レトロニム]です。従来の手法では上記のような特徴を持っており、近年でもMPAが「SPAより昔からある」パターンとして説明されることがあります。
 なお、HTMLの生成方法がSSRやSSGであっても、ハードナビゲーションを伴う場合は、MPAとして分類されることが多いです。
 
 ## Partial Prerendering(PPR)
