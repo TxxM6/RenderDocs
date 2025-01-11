@@ -184,7 +184,7 @@ https://prerender.io/
 そこで Rendr が採用したアプローチは、Node.js を活用することで、それまで Ruby と JavaScript で重複していたロジックを一本化し、**クライアントサイドとサーバーサイドの双方で実行可能な共通コードを実現することでした。**
 
 :::message
-当時は同じコードがサーバーサイドでもクライアントサイドでも実行されることを **Isomorphic**　と呼びました。現在でもサーバーサイド、クライアントサイドの両側で実行される概念に対して Isomorphic という言葉が使われることがあります。[参考: Isomorphic Loaders](https://frontendmasters.com/blog/introducing-tanstack-start/#isomorphic-loaders)
+当時は同じコードがサーバーサイドでもクライアントサイドでも実行されることを **Isomorphic** と呼びました。現在でもサーバーサイド、クライアントサイドの両側で実行される概念に対して Isomorphic という言葉が使われることがあります。[参考: Isomorphic Loaders](https://frontendmasters.com/blog/introducing-tanstack-start/#isomorphic-loaders)
 :::
 
 
@@ -221,8 +221,8 @@ SPA登場以前とは異なり、モダンなSSRフレームワークでは異�
 
 
 :::message
-Astro と SSR
-[MPA](#multi-page-application(mpa)) のフレームワークである Astro でも、 SSR は [On-demand Rendering](https://docs.astro.build/en/guides/on-demand-rendering/) という機能として存在しており、ページリクエスト時にオンデマンドにサーバーサイドで HTML を生成する仕組みを指します。 
+[MPA](#multi-page-application(mpa)) のフレームワークである Astro でも、 SSR は [On-demand Rendering](https://docs.astro.build/en/guides/on-demand-rendering/) という機能として存在しており、ページリクエスト時にオンデマンドにサーバーサイドで HTML を生成する手法を指します。
+また、Astroにおいてもインタラクティブな部分(island)は、クライアントサイドで部分的にハイドレーションされます。 
 :::
 
 
@@ -256,7 +256,7 @@ https://github.com/reactjs/rfcs/blob/main/text/0188-server-components.md#does-th
 
 **用語の意味: ビルド時に HTML (およびそのコンテンツ)を生成すること、あるいはそのレンダリングモデル**
 
-Static Site Generatorsとも。海外では、SSGは**Pre-Rendering**とも呼ばれています。
+Static Site Generatorsとも。海外では、SSGは **Pre-Rendering** とも呼ばれています。
 SSGでは、ビルド時にフレームワークによるデータフェッチやコンポーネントの実行が行われ、HTML(コンテンツ)が生成されます。よってSSGにおける「レンダリング」とは　**HTML を生成すること** と言えます。
 
 staticという名前の通り静的なHTML(コンテンツ)を取り扱うことになるため、CDNなどで比較的容易にキャッシュができるといった利点が挙げられますが、SSRのようにリクエストに応じてレスポンスを都度生成することはできません。また、SSGという用語自体は、ハイドレーションの有無に限らず広く使われているようです[^stateOfJs2024]。
@@ -328,7 +328,7 @@ Reactなどの場合、SSR、SSGではブラウザ上でもコンポーネント
 
 **意味: 初回表示もページ遷移時もサーバーで生成したHTMLレスポンスを表示するアプリケーション**
   
-直訳すると 複数のページ(HTML)で構成されるアプリケーション ですが、重要になってくるのは以下の2点です。これはMPAがSPAとの対比で使われる言葉であるためです。
+直訳すると 複数のページ(HTML)で構成されるアプリケーション ですが、重要であるのは以下の2点です。MPAがSPAとの対比で使われる言葉であるためです。
 1. **ページ遷移時に新たにHTMLレスポンスが送信され、画面全体が再読み込みされる**
 2. **HTML(コンテンツ)はブラウザ上ではなくサーバー側で生成される**
 
