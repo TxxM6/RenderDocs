@@ -221,7 +221,14 @@ https://prerender.io/
 
 サーバーサイドで生成される HTML はファーストビューとして表示するための静的なものにすぎないため、ブラウザ上でもJavaScript を実行してページをインタラクティブにする **ハイドレーション**(Hydration) という工程が必要になります。
 
-そして、このような、サーバーサイドとクライアントサイドで共通のコードを実行するタイプの SSR は、従来型の SSR と区別するため、**SSR with Hydration** と呼ばれました。
+そして、このような、サーバーサイドとクライアントサイドで共通のコードを実行し、ハイドレーションを行うタイプの SSR は、従来型の SSR と区別するため、**SSR with Hydration** と呼ばれました。
+
+:::message
+**ハイドレーション**
+Backbone.js や React などの SPAフレームワーク(ライブラリ)では、通常、初回表示時に空の HTML が表示され、その後 JavaScript を実行して**アプリケーションの状態**を生成し、それに基づいて DOM を更新して画面にコンテンツが反映されます。
+一方、SSRの場合は、サーバーサイドで同様にコードを実行し、コンテンツを含む HTML を出力しますが、この HTML は、主にファーストビュー(初期表示)のための**静的**なものです。
+よって、表示したページをインタラクティブにするために、ブラウザ側でもコードを実行して**アプリケーションの状態を復元**します。そして、サーバーから送られた HTML と一致するか確認しつつ、イベントリスナーのアタッチなどの処理を行います。このクライアント側での工程を **ハイドレーション** と呼びます。
+:::
 
 なお、以下のRenderの記事は、React が公開される 2013 年 5 月以前に書かれたものであり、現在のような SSR フレームワークの形態がその時点ですでに完成していたことを示唆しています。しかし、Rendr は React の普及によって主流となることはなく、Airbnb も最終的に React へ移行したようです。
 
@@ -232,7 +239,6 @@ Rendr の作者の Rendr の公開スライドに、すでに "Hydrate" とい�
 https://medium.com/airbnb-engineering/our-first-node-js-app-backbone-on-the-client-and-server-c659abb0e2b4
 
 https://www.slideshare.net/slideshow/introducing-rendr-run-your-backbonejs-apps-on-the-client-and-server/19106546
-
 
 
 #### 3. 現在の SSR
